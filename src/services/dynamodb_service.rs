@@ -34,7 +34,7 @@ impl DynamoDbServiceTrait for DynamoDbService {
 
 
 pub async fn query_dynamodb(service: &DynamoDbService, table_name: String, partition_key: String, partition_value: String, sort_key: Option<(String, String)>) {
-
+    let result: String;
     let mut query_input: QueryInput = Default::default();
     query_input.table_name = table_name;
 
@@ -64,9 +64,9 @@ pub async fn query_dynamodb(service: &DynamoDbService, table_name: String, parti
             match output.items {
                 Some(item_list) => {
                     for item in item_list {
-                        for (key, value) in item {
+                        for (_, value) in item {
                             if let Some(s) = &value.s {
-                                println!("{}: {}", key, s);
+                                result = s.to_string();
                             }
                         }
                     }
