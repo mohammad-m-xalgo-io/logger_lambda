@@ -1,2 +1,2 @@
-pub mod dynamodb_service;
-pub mod sqs_service;
+pub mod redis_client;
+pub mod s3_client;

@@ -5,33 +5,17 @@ mod utils;
 mod services;
 
 
+use bytes::Bytes;
 // use crate::services::dynamodb_service::{DynamoDbService, query_dynamodb};
-use crate::models::input_message::SqsEvent;
+use crate::models::input_message::Message;
 use crate::utils::logger;
-use crate::services::dynamodb_service::DynamoDbService;
 use lambda_runtime::{Error, LambdaEvent, Runtime};
 use serde_json::Value;
 use slog::{error, info};
 use tower::service_fn;
 use slog::{o};
-
-// use std::env;
-
-// pub fn get_environment() -> schema::Environment {
-//     match env::var("ENVIRONMENT") {
-//         Ok(val) => {
-//             if val == "production" {
-//                 schema::Environment::Production
-//             } else if val == "staging" {
-//                 schema::Environment::Staging
-//             } else {
-//                 panic!("Invalid environment: {}", val);
-//             }
-//         },
-//         Err(_) => panic!("ENVIRONMENT variable not set"),
-//     }
-// }
-//
+use services::s3_client::S3Client;
+use crate::services::s3_client::S3ClientTrait;
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {
@@ -41,15 +25,6 @@ async fn main() -> Result<(), Error> {
     Ok(())
 }
 
-// async fn func(event: LambdaEvent<Value>) -> Result<Value, Error> {
-//     match serde_json::from_value::<schema::GatewayCommandResponse>(event.payload.clone()) {
-//         Ok(command_response) => {
-//             dynamodb::query_dynamodb(command_response.command_id).await?;
-//             Ok(event.payload)
-//         }
-//         Err(err) => Err(Error::from(format!("Deserialization error: {}", err))),
-//     }
-// }
 
 async fn func(event: LambdaEvent<Value>) -> Result<Value, Error> {
     // Parse the incoming SQS event
@@ -59,10 +34,12 @@ async fn func(event: LambdaEvent<Value>) -> Result<Value, Error> {
         for record in records {
             if let Some(body) = record.get("body").and_then(Value::as_str) {
                 // Parse the body into an SqsEvent
-                match serde_json::from_str::<SqsEvent>(body) {
+                match serde_json::from_str::<Message>(body) {
                     Ok(sqs_event) => {
                         // Parsing was successful, continue processing
                         info!(loggi, "Message successfully parsed");
+                        let s3_client = S3Client::new("xalgo_kambi_adapter".to_string(), "eu-west-1".to_string()).await;
+                        s3_client.put_object(sqs_event.destination_name, sqs_event.destination_arn, Bytes::from(sqs_event.context)).await.unwrap();
                         return Ok(event.payload);
                     }
                     Err(err) => {
@@ -78,30 +55,15 @@ async fn func(event: LambdaEvent<Value>) -> Result<Value, Error> {
     Err(Error::from("No valid records found in payload"))
 }
 
-async fn process_record(event: LambdaEvent<Value>) -> Result<Value, Error> {
-    let loggi = logger::LOGGER.get_logger();
 
-    // Parse the body into an SqsEvent
-    let parsed_messages = message_parser(event.payload)?;
-
-    // Query the DynamoDB table
-    // let dynamodb_service = DynamoDbService::new(/* parameters */);
-    // let query_result = dynamodb_service.query(/* parameters */).await?;
-    //
-    // // Log the result
-    // info!(loggi, "Query result: {:?}", query_result);
-    //
-    // Ok(())
-}
-
-fn message_parser(payload: Value) -> Result<SqsEvent, Error> {
+fn message_parser(payload: Value) -> Result<Message, Error> {
     let loggi = logger::LOGGER.get_logger();
 
     if let Some(records) = payload.get("Records").and_then(Value::as_array) {
         for record in records {
             if let Some(body) = record.get("body").and_then(Value::as_str) {
                 // Parse the body into an SqsEvent
-                match serde_json::from_str::<SqsEvent>(body) {
+                match serde_json::from_str::<Message>(body) {
                     Ok(sqs_event) => {
                         // Parsing was successful, continue processing
                         info!(loggi, "Message successfully parsed");
@@ -132,7 +94,7 @@ mod tests {
             payload: json!({
                 "Records": [
                     {
-                        "body": "{\"entity_version\":1,\"command_id\":\"command1\",\"bet_offer_id\":\"offer1\",\"status\":\"PENDING\",\"status_reason_code\":\"reason1\",\"argument\":\"argument1\",\"message\":\"message1\",\"additional_entity_properties\":{\"keep_alive_expire_in_millis\":1000,\"non_combinable\":false,\"cash_out_payback\":1.23}}"
+                        "body": "{\"destination_arn\":\"MyTopic\",\"destination_name\":\"development-tzeract-platf-baseresourcesinfradevelo-4z5uolomql2t\",\"context\":\"context1\",\"context_params\":\"context_params1\"}"
                     }
                 ]
             }),
