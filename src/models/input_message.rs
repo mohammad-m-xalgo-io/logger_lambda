@@ -29,6 +29,13 @@ pub struct SqsEvent {
     pub additional_entity_properties: Option<AdditionalProp>,
 }
 
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Message {
+    pub destination_arn: String,
+    pub destination_name: String,
+    pub context : String,
+    pub context_params: Option<String>,
+}
 // pub enum Environment {
 //     Production,
 //     Staging,
