@@ -1,10 +1,10 @@
-// mod schema;
-// mod services;
 mod models;
 mod utils;
 mod services;
+mod processors;
 
 
+use std::fmt::format;
 use bytes::Bytes;
 // use crate::services::dynamodb_service::{DynamoDbService, query_dynamodb};
 use crate::models::input_message::Message;
@@ -14,8 +14,10 @@ use serde_json::Value;
 use slog::{error, info};
 use tower::service_fn;
 use slog::{o};
-use services::s3_client::S3Client;
-use crate::services::s3_client::S3ClientTrait;
+use services::s3::s3_client::S3Client;
+use crate::services::s3::s3_client::S3ClientTrait;
+use chrono::{Utc, Datelike};
+use crate::services::message_factory::PayloadFactory;
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {
@@ -38,8 +40,33 @@ async fn func(event: LambdaEvent<Value>) -> Result<Value, Error> {
                     Ok(sqs_event) => {
                         // Parsing was successful, continue processing
                         info!(loggi, "Message successfully parsed");
+                        let message_processor = PayloadFactory::create_formater("1".to_string());
+                        let formated_output = message_processor.formater();
+
+                        match sqs_event.destination_type.as_str() {
+                            "S3" => {
+                                info!(loggi, "Destination type is S3");
+                            },
+                            "SQS" => {
+                                info!(loggi, "Destination type is SQS");
+                            },
+                            _ => {
+                                error!(loggi, "Invalid destination type: {}", sqs_event.destination_type);
+                                return Err(Error::from("Invalid destination type"));
+                            }
+                        }
+                        let now = Utc::now();
+                        let date_string = format!("{}/{:02}/{:02}", now.year(), now.month(), now.day());
                         let s3_client = S3Client::new("xalgo_kambi_adapter".to_string(), "eu-west-1".to_string()).await;
-                        s3_client.put_object(sqs_event.destination_name, sqs_event.destination_arn, Bytes::from(sqs_event.context)).await.unwrap();
+                        match s3_client.put_object(sqs_event.destination_name, date_string,  Bytes::from("test-body")).await {
+                            Ok(_) => {
+                                info!(loggi, "Successfully put object in S3");
+                            },
+                            Err(err) => {
+                                error!(loggi, "Failed to put object in S3: {}", err);
+                                return Err(Error::from(err));
+                            }
+                        }
                         return Ok(event.payload);
                     }
                     Err(err) => {
@@ -94,7 +121,7 @@ mod tests {
             payload: json!({
                 "Records": [
                     {
-                        "body": "{\"destination_arn\":\"MyTopic\",\"destination_name\":\"development-tzeract-platf-baseresourcesinfradevelo-4z5uolomql2t\",\"context\":\"context1\",\"context_params\":\"context_params1\"}"
+                        "body": "{\"destination_type\": \"S3\",\"destination_arn\":\"development-tzeract-platf-baseresourcesinfradevelo-4z5uolomql2t\",\"destination_name\":\"development-tzeract-platf-baseresourcesinfradevelo-4z5uolomql2t\",\"context\":\"context1\",\"context_params\":\"context_params1\"}"
                     }
                 ]
             }),

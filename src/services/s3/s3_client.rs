@@ -4,13 +4,14 @@ use aws_sdk_s3::error::{SdkError, UnknownVariantError};
 use aws_sdk_s3::{Error as S3Error};
 use bytes::Bytes;
 use aws_smithy_types::byte_stream::ByteStream;
+use crate::services::errors::MyError;
 pub struct S3Client {
     client: Client,
 }
 
 pub trait S3ClientTrait {
     async fn get_object(&self, bucket: String, key: String) -> Result<Bytes, S3Error>;
-    async fn put_object(&self, bucket: String, key: String, body:Bytes) -> Result<(), S3Error>;
+    async fn put_object(&self, bucket: String, key: String, body:Bytes) -> Result<(), MyError>;
 }
 
 impl S3Client {
@@ -35,10 +36,14 @@ impl S3ClientTrait for S3Client {
         Ok(body)
     }
 
-    async fn put_object(&self, bucket: String, key: String, body: Bytes) -> Result<(), S3Error> {
+    async fn put_object(&self, bucket: String, key: String, body: Bytes) -> Result<(), MyError> {
         let body: ByteStream = ByteStream::from(body);
-        self.client.put_object().bucket(bucket).key(key).body(body).send().await?;
-        Ok(())
+        // self.client.put_object().bucket(bucket).key(key).body(body).send().await?;
+        match self.client.put_object().bucket(bucket).key(key).body(body).send().await {
+            Ok(_) => Ok(()),
+            Err(err) => Err(MyError{message: format!("Failed to put object: {}", err),
+            }),
+        }
     }
 }
 

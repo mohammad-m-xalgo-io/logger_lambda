@@ -31,8 +31,10 @@ pub struct SqsEvent {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Message {
+    pub destination_type: String,
     pub destination_arn: String,
     pub destination_name: String,
+    pub processor_type: String,
     pub context : String,
     pub context_params: Option<String>,
 }
