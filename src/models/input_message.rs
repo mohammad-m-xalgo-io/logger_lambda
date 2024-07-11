@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use serde_json::Value;
 use std::option::Option;
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -37,6 +38,23 @@ pub struct Message {
     pub processor_type: String,
     pub context : String,
     pub context_params: Option<String>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct DynamoDBEvent {
+    #[serde(alias = "eventID")]
+    event_id: String,
+    #[serde(alias = "eventName")]
+    pub event_name: String,
+    #[serde(alias = "eventVersion")]
+    event_version: String,
+    #[serde(alias = "eventSource")]
+    pub event_source: String,
+    #[serde(alias = "awsRegion")]
+    aws_region: String,
+    pub dynamodb: Value,
+    #[serde(alias = "eventSourceARN")]
+    event_source_arn: String,
 }
 // pub enum Environment {
 //     Production,

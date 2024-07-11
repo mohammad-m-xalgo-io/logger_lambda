@@ -1,0 +1,347 @@
+[
+  {
+    "eventID": "5739bf995a5b2696e7f644898f1b124c",
+    "eventName": "REMOVE",
+    "eventVersion": "1.1",
+    "eventSource": "aws:dynamodb",
+    "awsRegion": "eu-west-1",
+    "dynamodb": {
+      "ApproximateCreationDateTime": 1720685408.0,
+      "Keys": {
+        "event_xid": {
+          "S": "mat_1262bd355a9d7a0c59dd54358548a636324a0815"
+        },
+        "adapter_betoffer_id": {
+          "S": "ogr_f347f17c2c0175f080f19996a47c5869"
+        }
+      },
+      "OldImage": {
+        "kambi_event_id": {
+          "NULL": true
+        },
+        "max_prob": {
+          "N": "1"
+        },
+        "event_xid": {
+          "S": "mat_1262bd355a9d7a0c59dd54358548a636324a0815"
+        },
+        "suspended": {
+          "BOOL": false
+        },
+        "catalog_id": {
+          "S": "1270ecf0-2529-4414-9fc8-47d938489225"
+        },
+        "min_prob": {
+          "N": "0"
+        },
+        "sequence_number": {
+          "N": "13"
+        },
+        "bet_offer_type": {
+          "S": "OVER_UNDER"
+        },
+        "entity_type": {
+          "S": "EVENT"
+        },
+        "event_id": {
+          "S": "mat_1262bd355a9d7a0c59dd54358548a636324a0815"
+        },
+        "kambi_betoffer_id": {
+          "NULL": true
+        },
+        "outcomes": {
+          "L": [
+            {
+              "M": {
+                "normalized_probability": {
+                  "N": "0"
+                },
+                "line": {
+                  "N": "1.5"
+                },
+                "invalid_after": {
+                  "S": "2024-02-25T08: 28: 31.177524Z"
+                },
+                "xalgo_xid": {
+                  "S": "out_a8c5652e3af2b0a9222eb8bd48570694"
+                },
+                "win_probability": {
+                  "N": "0"
+                },
+                "push_type": {
+                  "S": "NONE_PUSHABLE"
+                },
+                "generated_at": {
+                  "S": "2024-02-20T20: 27: 50.970544Z"
+                },
+                "bettable": {
+                  "BOOL": false
+                },
+                "cashoutable": {
+                  "BOOL": true
+                },
+                "win_expression": {
+                  "S": "HOME_GOAL_HT + AWAY_GOAL_HT > 1.5"
+                },
+                "insurance_expression": {
+                  "NULL": true
+                },
+                "visible": {
+                  "BOOL": false
+                },
+                "push_probability": {
+                  "N": "0"
+                },
+                "base_odds": {
+                  "N": "1"
+                },
+                "boolean_expression": {
+                  "M": {
+                    "insurance": {
+                      "NULL": true
+                    },
+                    "win": {
+                      "M": {
+                        "pak": {
+                          "L": [
+                            {
+                              "S": "pak_92aaea8e782b2fb5ee9f200f0ab50cad + pak_eabeaebd4f9311e13394eac35014cd60 > 1.5"
+                            }
+                          ]
+                        },
+                        "human": {
+                          "L": [
+                            {
+                              "S": "HOME_GOAL_HT + AWAY_GOAL_HT > 1.5"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                },
+                "base_payback": {
+                  "N": "0.925"
+                },
+                "kambi_id": {
+                  "NULL": true
+                },
+                "base_countdown": {
+                  "N": "1"
+                },
+                "in_event_combinable": {
+                  "BOOL": false
+                },
+                "fraction_odds": {
+                  "S": "1"
+                },
+                "bet_offer_type": {
+                  "S": "OVER_UNDER"
+                },
+                "selection": {
+                  "S": "OVER"
+                },
+                "parent_id": {
+                  "S": "ogr_f347f17c2c0175f080f19996a47c5869"
+                },
+                "base_cash_out_payback": {
+                  "N": "0.95"
+                },
+                "kambi_selection": {
+                  "NULL": true
+                },
+                "status": {
+                  "S": "OPEN"
+                }
+              }
+            },
+            {
+              "M": {
+                "normalized_probability": {
+                  "N": "0"
+                },
+                "line": {
+                  "N": "1.5"
+                },
+                "invalid_after": {
+                  "S": "2024-02-25T08: 28: 31.181579Z"
+                },
+                "xalgo_xid": {
+                  "S": "out_dd6a19b1b9fb8696f00ea6c4cf612cb6"
+                },
+                "win_probability": {
+                  "N": "0"
+                },
+                "push_type": {
+                  "S": "NONE_PUSHABLE"
+                },
+                "generated_at": {
+                  "S": "2024-02-20T20: 27: 50.970578Z"
+                },
+                "bettable": {
+                  "BOOL": false
+                },
+                "cashoutable": {
+                  "BOOL": true
+                },
+                "win_expression": {
+                  "S": "HOME_GOAL_HT + AWAY_GOAL_HT < 1.5"
+                },
+                "insurance_expression": {
+                  "NULL": true
+                },
+                "visible": {
+                  "BOOL": false
+                },
+                "push_probability": {
+                  "N": "0"
+                },
+                "base_odds": {
+                  "N": "1"
+                },
+                "boolean_expression": {
+                  "M": {
+                    "insurance": {
+                      "NULL": true
+                    },
+                    "win": {
+                      "M": {
+                        "pak": {
+                          "L": [
+                            {
+                              "S": "pak_92aaea8e782b2fb5ee9f200f0ab50cad + pak_eabeaebd4f9311e13394eac35014cd60 < 1.5"
+                            }
+                          ]
+                        },
+                        "human": {
+                          "L": [
+                            {
+                              "S": "HOME_GOAL_HT + AWAY_GOAL_HT < 1.5"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                },
+                "base_payback": {
+                  "N": "0.925"
+                },
+                "kambi_id": {
+                  "NULL": true
+                },
+                "base_countdown": {
+                  "N": "1"
+                },
+                "in_event_combinable": {
+                  "BOOL": false
+                },
+                "fraction_odds": {
+                  "S": "1"
+                },
+                "bet_offer_type": {
+                  "S": "OVER_UNDER"
+                },
+                "selection": {
+                  "S": "UNDER"
+                },
+                "parent_id": {
+                  "S": "ogr_f347f17c2c0175f080f19996a47c5869"
+                },
+                "base_cash_out_payback": {
+                  "N": "0.95"
+                },
+                "kambi_selection": {
+                  "NULL": true
+                },
+                "status": {
+                  "S": "OPEN"
+                }
+              }
+            }
+          ]
+        },
+        "calling_app": {
+          "S": "xAlgo"
+        },
+        "context": {
+          "M": {
+            "entities": {
+              "L": [
+                {
+                  "S": "HOME"
+                },
+                {
+                  "S": "AWAY"
+                }
+              ]
+            },
+            "line_types": {
+              "L": []
+            },
+            "line": {
+              "N": "1.5"
+            },
+            "counter": {
+              "S": "GOAL"
+            },
+            "type": {
+              "S": "OVER_UNDER"
+            },
+            "entity_id": {
+              "S": "mat_1262bd355a9d7a0c59dd54358548a636324a0815"
+            },
+            "lines": {
+              "L": [
+                {
+                  "N": "0.5"
+                },
+                {
+                  "N": "1.5"
+                },
+                {
+                  "N": "2.5"
+                },
+                {
+                  "N": "3.5"
+                }
+              ]
+            },
+            "time_selection": {
+              "S": "FIRST_HALF"
+            }
+          }
+        },
+        "payback_strategy": {
+          "M": {
+            "size": {
+              "N": "2"
+            },
+            "payback": {
+              "N": "0.925"
+            },
+            "strategy_type": {
+              "S": "CLASSIC"
+            },
+            "safety_buffer": {
+              "N": "0"
+            }
+          }
+        },
+        "adapter_betoffer_id": {
+          "S": "ogr_f347f17c2c0175f080f19996a47c5869"
+        },
+        "id": {
+          "S": "ogr_f347f17c2c0175f080f19996a47c5869"
+        },
+        "sport": {
+          "S": "SOCCER"
+        }
+      },
+      "SequenceNumber": "698660000000000093350428746",
+      "SizeBytes": 2213,
+      "StreamViewType": "NEW_AND_OLD_IMAGES"
+    },
+    "eventSourceARN": "arn:aws:dynamodb:eu-west-1: 960924487126:table/development-betoffer/stream/2024-02-15T13: 05:19.222"
+  }
+]

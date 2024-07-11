@@ -18,9 +18,9 @@ impl PayloadFactory {
 
 pub struct ClientFactory;
 impl ClientFactory {
-    pub fn create_client(processor_type: String) -> Box<dyn Formatter> {
+    pub async fn create_client(processor_type: String) -> S3Client {
         match processor_type.as_str() {
-            "1" => Box::new(S3Client::new("xalgo_kambi_adapter".to_string(), "eu-west-1".to_string())),
+            "1" => S3Client::new("xalgo_kambi_adapter".to_string(), "eu-west-1".to_string()).await,
             _ => panic!("Unknown processor type"),
         }
     }
